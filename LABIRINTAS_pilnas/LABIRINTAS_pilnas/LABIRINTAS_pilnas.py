@@ -1,6 +1,7 @@
 import customtkinter
 import pygame
 import time
+from PIL import Image
 
 
 #Kuriama grafinė sąsaja, pagrindinis langas, mygtukai
@@ -9,14 +10,13 @@ customtkinter.set_default_color_theme('dark-blue')
 langas=customtkinter.CTk()
 langas.geometry('500x400')
 langas.title('Labirintas')
+# pav=customtkinter.CTkImage(light_image=Image.open("C:\Users\Darija\Desktop\Balta.png"),dark_image=Image.open("C:\Users\Darija\Desktop\Juoda.png"), size=(500,400))
 remas=customtkinter.CTkFrame(langas)
 remas.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.96)
 zaid_pav=customtkinter.CTkLabel(remas, text='LABIRINTAS', font=('Silkscreen',52))
 zaid_pav.pack(pady=25, padx=10)
 zaid_kr=customtkinter.CTkLabel(remas, text='')
 langas.resizable(False,False)
-n_x1=0
-n_y1=0
 
 #Laiko skaiciavimas
 start_time =None
@@ -50,7 +50,7 @@ def baigti():
     langas.destroy()
     
 def move(event):
-    global x1, y1, x2, y2, x_k, y_k
+    global n_x1, n_y1, x_k, y_k
     x_k,y_k=0, 0
     if event.keysym=="Up":
         y_k=-10
@@ -74,6 +74,13 @@ def move(event):
         ):
             return     
     l.move(player,x_k,y_k)
+    print(l.bbox(player))
+    if (597 <= x1 <= 622 and 288<=y1<=312):
+        level_2()
+    if(312 <=x1<=345 and 565<=y1<=598):
+        level_3()
+    if (590<=x1<=625 and 210<=y1<=245):
+        print('hahaha')
 
 langas.bind_all("<Key>",move)
     
@@ -138,7 +145,7 @@ def level_1():
     (595,35,595,70),(595,105,595,175),(595,280,595,490),(595,525,595,560),
     (625,0,625,280),(625,315,625,595)]
     #Generuojamas isejimas
-    exit_arrow=l.create_oval(600,290,620,310, fill="black", width=3)
+    exit_arrow=l.create_line(600,310,620,310, fill="green", width=3)
     
     l.create_line(0,4,630,4,fill="black",width=5) 
     l.create_line(35,35,70,35,fill="black",width=5)
@@ -282,9 +289,6 @@ def level_1():
     l.create_line(595,525,595,560,fill="black",width=5)
     l.create_line(625,0,625,280,fill="black",width=5)
     l.create_line(625,315,625,595,fill="black",width=5)
-
-            
-
     
 #Sukuriama antro lygio funkcija, joje aprašomi lango pakeitimai ir suformatojamas naujas labirintas 
 def level_2():
@@ -634,20 +638,8 @@ def level_3():
     for i in range (len(labirintas)):
         kordinates_XY=labirintas[i]
         l.create_line(kordinates_XY, fill='Black', width=5)
+    exit_arrow=l.create_oval(600, 220, 620, 240,fill="black")
         
-# def menu():
-#     mygt1.place(relx=0.36, rely=0.55)
-#     mygt2.place(relx=0.36, rely=0.65)
-#     pasirinkimas.place(relx=0.83, rely=0.02)
-#     remas.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.96)
-#     mygt4.destroy()
-#     mygt5.destroy()
-#     mygt6.destroy()
-#     l.destroy()
-#     zaid_pav.pack(pady=25, padx=10)
-#     zaid.destroy()
-    
-    
 
 #Pagrindinio lango mygtukai
 
@@ -657,8 +649,6 @@ mygt1.place(relx=0.36, rely=0.55)
 mygt2=customtkinter.CTkButton(langas, text='Išeiti', command=baigti, fg_color='#1b145e')
 mygt2.place(relx=0.36, rely=0.65)
 
-
-# mygt4=customtkinter.CTkButton(remas, text='Grįžti į pradinį meniu', fg_color='#1b145e', command=menu)
 
 mygt7=customtkinter.CTkButton(langas, text='Ankstesnis lygis', command=level_1)
 
