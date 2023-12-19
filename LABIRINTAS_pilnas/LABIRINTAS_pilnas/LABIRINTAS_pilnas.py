@@ -29,6 +29,7 @@ def laikpab1():
     
     end_time=time.time()
     laikas1=end_time-start_time
+    print(laikas1)
     
 
 #Sukuriama funkcija, kuri leist nustatyti lango išvaizdą (Dark, Light)
@@ -49,7 +50,7 @@ def baigti():
     langas.destroy()
     
 def move(event):
-    global x1, y1, x2, y2
+    global x1, y1, x2, y2, x_k, y_k
     x_k,y_k=0, 0
     if event.keysym=="Up":
         y_k=-10
@@ -92,7 +93,6 @@ def level_1():
     zaid_pav.place(relx=1, rely=1)
     mygt1.place(relx=1, rely=0.5)
     mygt2.place(relx=1, rely=0.6)
-    mygt3.place(relx=1, rely=0.7)
     mygt7.destroy()
     pasirinkimas.place(relx=1, rely=0)    
     #Sukuriama žaidėjo ikona
@@ -138,7 +138,8 @@ def level_1():
     (595,35,595,70),(595,105,595,175),(595,280,595,490),(595,525,595,560),
     (625,0,625,280),(625,315,625,595)]
     #Generuojamas isejimas
-    exit_=l.create_rectangle(600,285,630,310, fill="green", width=3)
+    exit_arrow=l.create_oval(600,290,620,310, fill="black", width=3)
+    
     l.create_line(0,4,630,4,fill="black",width=5) 
     l.create_line(35,35,70,35,fill="black",width=5)
     l.create_line(105,35,175,35,fill="black",width=5)
@@ -281,23 +282,195 @@ def level_1():
     l.create_line(595,525,595,560,fill="black",width=5)
     l.create_line(625,0,625,280,fill="black",width=5)
     l.create_line(625,315,625,595,fill="black",width=5)
-    x1,y1,x2,y2 = l.bbox(player)
-    if player (x1 == 630 and x2 == 600 and y1 == 310 and y2 == 285):
-        level_2()
-        laikpab1()
+
+            
+
     
 #Sukuriama antro lygio funkcija, joje aprašomi lango pakeitimai ir suformatojamas naujas labirintas 
 def level_2():
-    global mygt7
+    global l, labirintas, player, langas, zaid, mygt5, mygt7, mygt4
     mygt5.configure(text='Kitas lygis', command=level_3)
     mygt7=customtkinter.CTkButton(remas, text='Ankstesnis lygis', command=level_1, fg_color='#1b145e')
     mygt7.place(relx=0.39, rely=0.89, relwidth=0.2)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
+    player=l.create_oval(288,4,308,24,fill="green")
+
+    # Labirinto sienų kordinatės
+    labirintas =[
+    (2,2,130,2),
+    (146,2,290,2),
+    (18,18,50,18),
+    (66,18,82,18),
+    (114,18,130,18),
+    (162,18,258,18),
+    (2,34,18,34),
+    (50,34,162,34),
+    (178,34,194,34),
+    (210,34,226,34),
+    (258,34,290,34),
+    (50,50,98,50),
+    (130,50,146,50),
+    (194,50,210,50),
+    (226,50,274,50),
+    (18,66,34,66),
+    (50,66,66,66),
+    (98,66,114,66),
+    (146,66,162,66),
+    (210,66,226,66),
+    (242,66,258,66),
+    (2,82,50,82),
+    (66,82,146,82),
+    (162,82,178,82),
+    (210,82,242,82),
+    (274,82,290,82),
+    (50,98,66,98),
+    (82,98,114,98),
+    (146,98,226,98),
+    (242,98,258,98),
+    (34,114,50,114),
+    (66,114,82,114),
+    (146,114,178,114),
+    (194,114,210,114),
+    (258,114,274,114),
+    (2,130,66,130),
+    (82,130,98,130),
+    (130,130,178,130),
+    (226,130,258,130),
+    (18,146,50,146),
+    (66,146,82,146),
+    (114,146,130,146),
+    (194,146,210,146),
+    (258,146,290,146),
+    (2,162,34,162),
+    (50,162,82,162),
+    (98,162,146,162),
+    (162,162,194,162),
+    (210,162,242,162),
+    (258,162,274,162),
+    (50,178,66,178),
+    (82,178,98,178),
+    (114,178,130,178),
+    (146,178,194,178),
+    (226,178,242,178),
+    (258,178,274,178),
+    (66,194,82,194),
+    (146,194,178,194),
+    (194,194,226,194),
+    (274,194,290,194),
+    (18,210,50,210),
+    (82,210,146,210),
+    (178,210,194,210),
+    (210,210,258,210),
+    (34,226,50,226),
+    (66,226,82,226),
+    (98,226,146,226),
+    (162,226,178,226),
+    (194,226,210,226),
+    (274,226,290,226),
+    (2,242,34,242),
+    (66,242,82,242),
+    (98,242,130,242),
+    (146,242,162,242),
+    (210,242,242,242),
+    (258,242,274,242),
+    (18,258,34,258),
+    (50,258,66,258),
+    (98,258,178,258),
+    (194,258,210,258),
+    (226,258,258,258),
+    (2,274,146,274),
+    (162,274,290,274),
+    (2,2,2,274),
+    (18,50,18,66),
+    (18,98,18,130),
+    (18,178,18,210),
+    (18,226,18,242),
+    (34,18,34,66),
+    (34,82,34,98),
+    (34,146,34,194),
+    (34,210,34,226),
+    (34,242,34,258),
+    (50,18,50,34),
+    (50,50,50,66),
+    (50,98,50,114),
+    (50,178,50,210),
+    (50,226,50,274),
+    (66,2,66,18),
+    (66,82,66,98),
+    (66,114,66,146),
+    (66,178,66,210),
+    (66,226,66,242),
+    (82,50,82,82),
+    (82,98,82,114),
+    (82,146,82,178),
+    (82,194,82,226),
+    (82,258,82,274),
+    (98,2,98,34),
+    (98,114,98,162),
+    (98,178,98,194),
+    (98,242,98,258),
+    (114,34,114,66),
+    (114,98,114,146),
+    (114,194,114,210),
+    (130,18,130,34),
+    (130,66,130,82),
+    (130,98,130,146),
+    (130,178,130,210),
+    (146,2,146,18),
+    (146,50,146,114),
+    (146,146,146,178),
+    (146,210,146,242),
+    (146,258,146,274),
+    (162,34,162,50),
+    (162,130,162,162),
+    (162,194,162,226),
+    (178,34,178,82),
+    (178,130,178,146),
+    (178,178,178,194),
+    (178,226,178,258),
+    (194,18,194,34),
+    (194,50,194,98),
+    (194,130,194,162),
+    (194,194,194,274),
+    (210,34,210,50),
+    (210,114,210,146),
+    (210,162,210,194),
+    (226,50,226,66),
+    (226,82,226,130),
+    (226,146,226,162),
+    (226,194,226,226),
+    (226,242,226,258),
+    (242,18,242,50),
+    (242,66,242,82),
+    (242,98,242,114),
+    (242,130,242,146),
+    (242,162,242,194),
+    (242,226,242,242),
+    (258,66,258,98),
+    (258,114,258,162),
+    (258,178,258,258),
+    (274,2,274,18),
+    (274,50,274,82),
+    (274,98,274,130),
+    (274,210,274,226),
+    (274,258,274,274),
+    (290,2,290,274)]
+
+    # Proporcingai padidinti kordinates
+    Multiplication_value = 2.16
+    # Kiekvieno elemento daugyba
+    labirintas = tuple(tuple(element * Multiplication_value for element in row) for row in labirintas)
+
+    # Labirinto nupaišymas naudojant kordinates
+    for i in range(len(labirintas)):
+        Coordinates_XY = labirintas[i]
+        l.create_line(Coordinates_XY ,fill="black",width=5) 
+    exit_arrow = l.create_rectangle(320,565, 345, 590, fill='green', width=3)
 
 #Sukuriama trečio lygio funkcija, kurioje aprašomi lango pakeitimai ir kuriamas paskutinis labirintas
 def level_3():
-    global labirintas, l, player
+    global labirintas, l, player, mygt7
     mygt5.configure(text='Žaist iš naujo', command=level_1)
     mygt7.configure(command=level_2)
     l=customtkinter.CTkCanvas(remas,bg="white")
@@ -457,10 +630,24 @@ def level_3():
      (x+(2*lang),y+(16*lang),x+(2*lang), y+(17*lang) ),
      (x+(13*lang),y+(16*lang),x+(13*lang), y+(17*lang) ),
      (x+(15*lang),y+(16*lang),x+(15*lang), y+(17*lang) )]    
-    #Braižomi labirinto rėmai
+    #Braižomas labirintas
     for i in range (len(labirintas)):
         kordinates_XY=labirintas[i]
         l.create_line(kordinates_XY, fill='Black', width=5)
+        
+# def menu():
+#     mygt1.place(relx=0.36, rely=0.55)
+#     mygt2.place(relx=0.36, rely=0.65)
+#     pasirinkimas.place(relx=0.83, rely=0.02)
+#     remas.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.96)
+#     mygt4.destroy()
+#     mygt5.destroy()
+#     mygt6.destroy()
+#     l.destroy()
+#     zaid_pav.pack(pady=25, padx=10)
+#     zaid.destroy()
+    
+    
 
 #Pagrindinio lango mygtukai
 
@@ -470,8 +657,8 @@ mygt1.place(relx=0.36, rely=0.55)
 mygt2=customtkinter.CTkButton(langas, text='Išeiti', command=baigti, fg_color='#1b145e')
 mygt2.place(relx=0.36, rely=0.65)
 
-mygt3=customtkinter.CTkButton(langas, text='Nugalėtojai', fg_color='#1b145e')
-mygt3.place(relx=0.36, rely=0.85)
+
+# mygt4=customtkinter.CTkButton(remas, text='Grįžti į pradinį meniu', fg_color='#1b145e', command=menu)
 
 mygt7=customtkinter.CTkButton(langas, text='Ankstesnis lygis', command=level_1)
 
