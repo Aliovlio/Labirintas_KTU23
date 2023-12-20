@@ -1,4 +1,4 @@
- import customtkinter
+import customtkinter
 import pygame
 import time
 from PIL import Image
@@ -18,8 +18,8 @@ pav=customtkinter.CTkImage(light_image=Image.open("C:/Users/Darija/Desktop/Balta
                            size=(500,400))
 zaid_kr=customtkinter.CTkLabel(langas, image=pav, text=' ' )
 zaid_kr.place(relx=0, rely=0, relwidth=1, relheight=1)
-zaid_pav=customtkinter.CTkLabel(langas, text='LABIRINTAS', font=('Silkscreen',52))
-zaid_pav.pack(pady=25, padx=10)
+zaid_pav=customtkinter.CTkLabel(langas, text='LABIRINTAS', font=('Silkscreen',52), fg_color='black')
+zaid_pav.pack(pady=45, padx=10)
 #Laiko skaiciavimas
 start_time =None
 
@@ -51,8 +51,10 @@ def laikpab1():
 def lango_nust(choice):
     if choice=='Light':
         customtkinter.set_appearance_mode('Light')
+        zaid_pav.configure(fg_color='white')
     else:
         customtkinter.set_appearance_mode('Dark')
+        zaid_pav.configure(fg_color='black')
 #Sukuriamas ComboBox
 sarasas=['Dark','Light']
 combobox_pas=customtkinter.StringVar(value='Dark')
@@ -90,7 +92,6 @@ def move(event):
         ):
             return     
     l.move(player,x_k,y_k)
-    print(l.bbox(player))
     if (597 <= x1 <= 622 and 288<=y1<=312):
         level_2()
     if(312 <=x1<=345 and 565<=y1<=598):
