@@ -1,8 +1,7 @@
-import customtkinter
+ import customtkinter
 import pygame
 import time
 from PIL import Image
-
 
 #Kuriama grafinė sąsaja, pagrindinis langas, mygtukai
 customtkinter.set_appearance_mode('Dark')
@@ -10,14 +9,17 @@ customtkinter.set_default_color_theme('dark-blue')
 langas=customtkinter.CTk()
 langas.geometry('500x400')
 langas.title('Labirintas')
-# pav=customtkinter.CTkImage(light_image=Image.open("C:\Users\Darija\Desktop\Balta.png"),dark_image=Image.open("C:\Users\Darija\Desktop\Juoda.png"), size=(500,400))
 remas=customtkinter.CTkFrame(langas)
 remas.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=0.96)
-zaid_pav=customtkinter.CTkLabel(remas, text='LABIRINTAS', font=('Silkscreen',52))
-zaid_pav.pack(pady=25, padx=10)
-zaid_kr=customtkinter.CTkLabel(remas, text='')
-langas.resizable(False,False)
 
+langas.resizable(False,False)
+pav=customtkinter.CTkImage(light_image=Image.open("C:/Users/Darija/Desktop/Balta.png"),
+                           dark_image=Image.open("C:/Users/Darija/Desktop/Juoda.png"), 
+                           size=(500,400))
+zaid_kr=customtkinter.CTkLabel(langas, image=pav, text=' ' )
+zaid_kr.place(relx=0, rely=0, relwidth=1, relheight=1)
+zaid_pav=customtkinter.CTkLabel(langas, text='LABIRINTAS', font=('Silkscreen',52))
+zaid_pav.pack(pady=25, padx=10)
 #Laiko skaiciavimas
 start_time =None
 
@@ -25,11 +27,24 @@ def laikprad1():
     global start_time
     start_time=time.time()
     
+ #Funkcija sustabdanti laiko skaičiavimą ir sukurianti toplevel langą,
+ #kuris parodo kiek laiko žaidė žaidėjas
 def laikpab1():
-    
     end_time=time.time()
-    laikas1=end_time-start_time
-    print(laikas1)
+    laikas=end_time-start_time
+    langas_2=customtkinter.CTkToplevel(langas)
+    langas_2.geometry('600x300')
+    langas_2.resizable(True, False)
+    remas2=customtkinter.CTkFrame(langas_2)
+    remas2.place(relx=0, rely=0, relheight=1, relwidth=1)
+    tekst=customtkinter.CTkLabel(langas_2, text=f'Sveikiname, laimėjote! Užtrukote {round(laikas, 2)} sekundžių\es.', font=('Cambria', 20))
+    tekst.place(relx=0, rely=0, relwidth=1, relheight=1)
+    kl=customtkinter.CTkLabel(langas_2, text= "Ar norite kartoti žaidimą?", font=('Cambria', 16))
+    kl.place(relx=0.35, rely=0.6)
+    mygtukas=customtkinter.CTkButton(langas_2,text='Išeiti', command=baigti, fg_color='#1b145e')
+    mygtukas.place(relx=0.6, rely=0.8, relwidth=0.2)
+    mygtukas2=customtkinter.CTkButton(langas_2,text='Žaisti iš naujo', command=level_1, fg_color='#1b145e')
+    mygtukas2.place(relx=0.2, rely=0.8, relwidth=0.2)
     
 
 #Sukuriama funkcija, kuri leist nustatyti lango išvaizdą (Dark, Light)
@@ -49,6 +64,7 @@ pasirinkimas.place(relx=0.83, rely=0.02)
 def baigti():
     langas.destroy()
     
+#Žaidėjo judėjimą aprašanti funkcija
 def move(event):
     global n_x1, n_y1, x_k, y_k
     x_k,y_k=0, 0
@@ -79,16 +95,18 @@ def move(event):
         level_2()
     if(312 <=x1<=345 and 565<=y1<=598):
         level_3()
-    if (590<=x1<=625 and 210<=y1<=245):
-        print('hahaha')
+    if (590<=x1<=625 and 215<=y1<=240):
+        laikpab1()
 
 langas.bind_all("<Key>",move)
     
 #Pirmojo lygio funkcija
 def level_1():
-    global l, labirintas, player, langas, zaid, mygt5, mygt6, mygt7
+    global l, labirintas, player, langas, zaid, mygt5, mygt6
     pygame.init()
     #Aprašomi lango pakeitimai, sukuriami nauji mygtukai, jiems priskiriamos funkcijos
+    laikprad1()
+    zaid_kr.place(relx=1, rely=1)
     langas.geometry('550x590')
     zaid=customtkinter.CTkFrame(remas)
     zaid.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.87)
@@ -144,8 +162,8 @@ def level_1():
     (560,35,560,105),(560,245,560,350),(560,455,560,525),(560,560,560,595),
     (595,35,595,70),(595,105,595,175),(595,280,595,490),(595,525,595,560),
     (625,0,625,280),(625,315,625,595)]
-    #Generuojamas isejimas
-    exit_arrow=l.create_line(600,310,620,310, fill="green", width=3)
+    #Generuojamas išėjimas
+    exit_=l.create_rectangle(600,290,620,310, fill="green", width=3)
     
     l.create_line(0,4,630,4,fill="black",width=5) 
     l.create_line(35,35,70,35,fill="black",width=5)
@@ -292,7 +310,7 @@ def level_1():
     
 #Sukuriama antro lygio funkcija, joje aprašomi lango pakeitimai ir suformatojamas naujas labirintas 
 def level_2():
-    global l, labirintas, player, langas, zaid, mygt5, mygt7, mygt4
+    global l, labirintas, player, langas, zaid, mygt5, mygt4, mygt7
     mygt5.configure(text='Kitas lygis', command=level_3)
     mygt7=customtkinter.CTkButton(remas, text='Ankstesnis lygis', command=level_1, fg_color='#1b145e')
     mygt7.place(relx=0.39, rely=0.89, relwidth=0.2)
@@ -470,18 +488,17 @@ def level_2():
     for i in range(len(labirintas)):
         Coordinates_XY = labirintas[i]
         l.create_line(Coordinates_XY ,fill="black",width=5) 
-    exit_arrow = l.create_rectangle(320,565, 345, 590, fill='green', width=3)
+    exit_ = l.create_rectangle(320,565, 345, 590, fill='yellow', width=3)
 
 #Sukuriama trečio lygio funkcija, kurioje aprašomi lango pakeitimai ir kuriamas paskutinis labirintas
 def level_3():
-    global labirintas, l, player, mygt7
+    global labirintas, l, player
     mygt5.configure(text='Žaist iš naujo', command=level_1)
-    mygt7.configure(command=level_2)
+    mygt7=customtkinter.CTkButton(remas, text='Ankstesnis lygis', command=level_2, fg_color='#1b145e')
+    mygt7.place(relx=0.39, rely=0.89, relwidth=0.2)
     l=customtkinter.CTkCanvas(remas,bg="white")
     l.place(x=15,y=15,width=630,height=595)
     player=l.create_oval(10,250,30,270,fill="green")
-    stulp=18
-    eil=17
     lang=34.5
     x=4
     y=4
@@ -638,7 +655,7 @@ def level_3():
     for i in range (len(labirintas)):
         kordinates_XY=labirintas[i]
         l.create_line(kordinates_XY, fill='Black', width=5)
-    exit_arrow=l.create_oval(600, 220, 620, 240,fill="black")
+    exit_=l.create_rectangle(600, 220, 620, 240,fill="red")
         
 
 #Pagrindinio lango mygtukai
